@@ -3,7 +3,6 @@ from typing import List, Dict, Any
 import pandas as pd
 from playwright.sync_api import sync_playwright, Page, Browser
 
-
 class BaseSupermarketScraper(ABC):
     """
     Abstract Base Class for supermarket scrapers.
@@ -65,14 +64,31 @@ class BaseSupermarketScraper(ABC):
 
         return df
 
-    def _parse_prices(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _parse_prices(self, df: pd.DataFrame,price_tag) -> pd.DataFrame:
         """Parses raw price strings (e.g., '1,49 €') into float numeric values."""
-        pass
+        numbers=df[price_tag]
+        numbers=numbers.str.strip('€')
+        numbers = numbers.str.replace(',', '.')
+        numbers = numbers.str.strip(' ')
+        df[price_tag] = numbers.astype(float)
+        return df
 
-    def _parse_package_sizes(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _parse_package_sizes(self, df: pd.DataFrame, package_sizes_tag: str) -> pd.DataFrame:
         """Extracts quantity numeric and unit (g, kg, ml, l) from raw size strings."""
-        pass
+
+        # 1. Use regex with two capture groups:
+        # Group 1: Digits with an optional decimal separator (comma or dot)
+        # Group 2: Letters representing the unit (g, kg, ml, l, etc.)
+        extracted = df[package_sizes_tag].str.extract(r'(\d+[\.,]?\d*)\s*([a-zA-Z]+)')
+
+        # 2. Name the columns directly
+        extracted.columns = ['quantity', 'unit']
+        extracted['quantity']=extracted['quantity'].str.replace(',', '.').astype(float)
+        df['quantity']=extracted['quantity']
+        df['unit']=extracted['unit'].str.lower()
+        return df
+
+
 
     def _compute_unit_prices(self, df: pd.DataFrame) -> pd.DataFrame:
         """Computes uniform €/kg or €/L price for mathematical optimisation input."""
-        pass
