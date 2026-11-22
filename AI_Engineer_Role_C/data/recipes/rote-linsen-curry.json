@@ -1,0 +1,16 @@
+{
+    "id": "red-lentil-curry",
+    "title": "Red Lentil Curry",
+    "servings": 2,
+    "tags": ["vegetarian", "vegan", "budget"],
+    "ingredients": [
+        {"canonical": "red lentils, dried", "quantity": 200, "unit": "g"},
+        {"canonical": "coconut milk", "quantity": 400, "unit": "ml"},
+        {"canonical": "onion", "quantity": 1, "unit": "piece"}
+    ],
+    "steps": [
+        "Dice the onion and sauté in a little oil until translucent.",
+        "Add the lentils and coconut milk and bring to a boil.",
+        "Simmer for 20 minutes until the lentils are soft."
+    ]
+}
