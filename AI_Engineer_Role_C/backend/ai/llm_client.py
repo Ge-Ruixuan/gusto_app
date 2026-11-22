@@ -53,7 +53,7 @@ def generate(prompt:str, schema:type[T], *, model:str = DEFAULT_MODEL, call: Cal
         + json.dumps(schema.model_json_schema(), ensure_ascii=False)
     )
     user = prompt
-    last_error = Exception | None = None
+    last_error: Exception | None = None
 
     for attempt in range(MAX_RETRIES):
         raw = call(system,user)

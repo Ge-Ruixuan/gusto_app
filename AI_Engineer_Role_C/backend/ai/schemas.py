@@ -1,24 +1,24 @@
 """Data models of the AI layer
 Rules:
-- Ingredient names are German and must be in lowercase: matches with the names.
-- Units come from a fixed list: g,ml,stück.
+- Ingredient names are English and must be in lowercase: matches with the names.
+- Units come from a fixed list: g,ml,piece.
 """
 
 from __future__ import annotations
 
 from enum import Enum
-from pydantic import BaseModel,ConfigDict,Field,field_vaidator
+from pydantic import BaseModel,ConfigDict,Field,field_validator
 
 class Unit(str,Enum):
     g = "g"
     ml = "ml"
-    stück = "stück"
+    stück = "piece"
 
 class Ingredient(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     canonical: str = Field(...,min_length=2,
-                           description = "Canonical name of the ingredient in German, lowercase. Exp: 'rote linsen, getrocknet'",
+                           description = "Canonical name of the ingredient in English, lowercase. Exp: 'red lentils, dried'",
                            )
     quantity: float = Field(...,gt=0,description="Quantity of the ingredient")
     unit: Unit
